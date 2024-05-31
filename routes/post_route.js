@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const requireLogin = require("../middleware/requireLogin");
-const { route } = require("./authen");
 const Post = mongoose.model("Post");
 
 router.get("/allpost", requireLogin, (req, res) => {
@@ -17,11 +16,8 @@ router.get("/allpost", requireLogin, (req, res) => {
 });
 
 router.get("/getsubscribpost", requireLogin, (req, res) => {
-  //if posted by in following
   Post.find({ postedby: { $in: req.user.following } })
     .populate("postedby", "_id name")
-
-    //only need id and name not all fields like passwork etc..
     .then((posts) => {
       res.json(posts);
     })
@@ -33,11 +29,8 @@ router.get("/getsubscribpost", requireLogin, (req, res) => {
 router.post("/createpost", requireLogin, (req, res) => {
   const { title, body, pic } = req.body;
   if (!title || !body || !pic) {
-    console.log("pic is ", pic);
     return res.status(422).json({ message: "please add all of fields" });
   }
-  // console.log("user is req", req.user);
-  // res.send("Ok");
   req.user.password = undefined; /// so that our password not shown in db
   const post = new Post({
     title,
@@ -45,18 +38,14 @@ router.post("/createpost", requireLogin, (req, res) => {
     photo: pic,
     postedby: req.user,
   });
-  //console.log("post:::::",post);
-
   post
     .save()
     .then((result) => {
-      //console.log("result in creat is:",result)
       res.json({ post: result });
     })
     .catch((err) => {
       console.log("err in create post ", err);
     });
-  // console.log("post is:",req.user);
 });
 
 router.get("/mypost", requireLogin, (req, res) => {
