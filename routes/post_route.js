@@ -9,7 +9,7 @@ router.get("/allpost", requireLogin, (req, res) => {
   Post.find()
     .populate("postedby", "_id name")
     .then((posts) => {
-      res.json(posts);     
+      res.json(posts);
     })
     .catch((err) => {
       console.log("err in allpost: ", err);
@@ -18,9 +18,9 @@ router.get("/allpost", requireLogin, (req, res) => {
 
 router.get("/getsubscribpost", requireLogin, (req, res) => {
   //if posted by in following
-  Post.find({postedby:{$in:req.user.following}})
+  Post.find({ postedby: { $in: req.user.following } })
     .populate("postedby", "_id name")
-    
+
     //only need id and name not all fields like passwork etc..
     .then((posts) => {
       res.json(posts);
@@ -64,7 +64,7 @@ router.get("/mypost", requireLogin, (req, res) => {
     .populate("postedby", "_id name")
     .then((mypost) => {
       res.json({ mypost });
-     // console.log("in my post");
+      // console.log("in my post");
     })
     .catch((err) => {
       console.log("err in mypost is", err);
@@ -109,7 +109,7 @@ router.put("/unlike", requireLogin, (req, res) => {
       if (!result) {
         return res.status(404).json({ message: "Post not found in unlike" });
       }
-      
+
       res.json(result);
     })
     .catch((err) => {
@@ -168,8 +168,4 @@ router.delete("/deletepost/:postId", requireLogin, (req, res) => {
     });
 });
 
-
-
-console.log("data in authen");
-// route that get the posts data of user who are sign in
 module.exports = router;
