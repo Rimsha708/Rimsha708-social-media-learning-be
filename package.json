@@ -4,8 +4,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "build": "npm run build --prefix client",
-    "now-build": "npm run build --prefix client"
+    "build": "npm run build",
+    "now-build": "npm run build"
   },
   "author": "",
   "license": "ISC",
