@@ -2,8 +2,11 @@ require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require('cors');
 
 const PORT = 10054;
+
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("hello");
